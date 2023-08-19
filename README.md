@@ -2,6 +2,9 @@
 
 Greenie is a Python-based Django application that serves as a comprehensive e-commerce platform tailored for grocery shopping. With an simple and user-friendly interface, Greenie enables customers to shop for a variety of grocery products from multiple vendors, make secure payments via Razorpay, and receive timely order confirmations. Vendors can effortlessly register, showcase their products, manage orders, and keep track of notifications, creating a seamless experience. The admin dashboard empowers administrators to oversee categories, products, users, and orders, while also facilitating order processing and data export to Excel.
 
+- Screenshot:
+![alt text](https://github.com/arunkrishnarao/greenie_ecommerce/blob/main/greenie.png?raw=true)
+
 ## Features
 
 - Admin: Admin users have extensive control over categories, products, users, and orders, along with the ability to generate Excel reports and customize frontpage images.
