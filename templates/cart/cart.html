@@ -1,221 +1,225 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base.html' %} {% block title %}Cart{% endblock title %} {%block content %}
+<div class="container p-4">
+  {% if cart %}
+  <h1 class="title p-2" style="margin-top: 48px;">Cart ({{ cart|length }})</h1>
 
-{% block title %}Cart{% endblock title %}
-
-{% block content %}
-
-    <h1 class="title">Cart</h1>
-
-    {% if cart %}
-    
-        <div class="box mb-6">
-            <div class="table">
-                <table class="table is-fullwidth is-striped">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {% for item in cart %}
-                        
-                            <tr>
-                                <td>
-                                    <figure class="image is-64x64">
-                                        <img src="{{ item.product.get_thumbnail }}" alt="{{item.product.title}}">
-                                    </figure>
-                                </td>
-                                <td>
-                                    <a href="{% url 'product:product' item.product.category.slug item.product.slug %}">{{item.product.title}}</a>
-                                </td>
-                                <td>
-                                    ${{item.quantity}}
-
-                                    <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
-                                    <a href="?change_quantity={{ item.id }}&quantity=1">+</a>
-
-                                </td>
-
-                                <td>${{ item.total_price }}</td>
-                                <td>
-                                    <a href="?remove_from_cart={{item.id}}" class="delete">Remove</a>
-                                </td>
-                            </tr>
-                        
-                        {% endfor %}
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td><strong>Total Cost</strong> </td>
-                            <td><strong>{{ cart|length }}</strong> </td>
-                            <td colspan="2">${{cart.get_total_cost}}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+  {% for item in cart %}
+  <div class="card rounded-3 mb-4">
+    <div class="card-body p-4">
+      <div class="row d-flex justify-content-between align-items-center">
+        <div class="col-md-2 col-lg-2 col-xl-2">
+          <img src="{{ item.product.get_thumbnail }}" class="img-fluid rounded-3" alt="{{ item.product.title }}" />
         </div>
+        <div class="col-md-3 col-lg-3 col-xl-3">
+          <p class="lead fw-normal mb-2">{{item.product.title}}</p>
+          <p><span class="text-muted">{{item.product.description}}</span></p>
+        </div>
+        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+          <a href="?change_quantity={{ item.id }}&quantity=-1" style="text-decoration: none">&nbsp;<i
+              class="bi bi-dash"></i>&nbsp;</a>
+          <p>{{item.quantity}}</p>
+          <a href="?change_quantity={{ item.id }}&quantity=1" style="text-decoration: none">&nbsp;<i
+              class="bi bi-plus"></i>&nbsp;</a>
+        </div>
+        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+          <h5 class="mb-0">₹{{ item.total_price }}</h5>
+        </div>
+        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+          <a href="?remove_from_cart={{item.id}}" style="text-decoration: none; color: red">&nbsp;<i
+              class="bi bi-trash"></i>&nbsp;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 
+  <h2 class="subtitle" style="margin-bottom: 24px;">Delivery Information</h2>
 
-        <h2 class="subtitle">Contact Information</h2>
-
-        <form method="post" action="" id="payment-form">
-            {% csrf_token %}
-
-            {% if form.non_field_errors %}
-                <div class="notification is-danger">
-                    {{form.non_field_errors}}
-                </div>
-            {% endif %}
-
-            {% if form.errors %}
-                <div class="notification is-danger">
-                    <ul>
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <li><strong>{{field.label}}</strong>{{error}}</li>
-                            {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-
-            <div class="columns">
-                <div class="column is-6">
-                    <div class="field">
-                        <label>First Name</label>
-
-                        <div class="control">
-                            <input type="text" name="first_name" id="" class="input">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Last Name</label>
-
-                        <div class="control">
-                            <input type="text" name="last_name" id="" class="input">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Email</label>
-
-                        <div class="control">
-                            <input type="email" name="email" id="" class="input">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Phone</label>
-
-                        <div class="control">
-                            <input type="text" name="phone" id="" class="input">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="column is-6">
-                    <div class="field">
-                        <label>Address</label>
-
-                        <div class="control">
-                            <input type="text" name="address" id="" class="input">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Zip Code</label>
-
-                        <div class="control">
-                            <input type="text" name="zipcode" id="" class="input">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Place</label>
-
-                        <div class="control">
-                            <input type="text" name="place" id="" class="input">
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <h2 class="subtitle">Payment Information</h2>
-
-            <div id="card-element">
-                {% comment %} A stripe Element will be inserted here {% endcomment %}
-            </div>
-
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="notification is-danger">
-                        {{message}}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            <div class="field">
-                <div class="control">
-                    <button class="button is-dark mt-4 is-uppercase">Checkout</button>
-                </div>
-            </div>
-        </form>
-    {% else %}
-
-    <p>You don't have any products in your cart.</p>
-
+  <form method="post" action="{% url 'cart:payment' %}" id="payment-form">
+    {% csrf_token %} {% if form.non_field_errors %}
+    <div class="notification is-danger">{{form.non_field_errors}}</div>
+    {% endif %} {% if form.errors %}
+    <div class="notification is-danger">
+      <ul>
+        {% for field in form %} {% for error in field.errors %}
+        <li><strong>{{field.label}}</strong>{{error}}</li>
+        {% endfor %} {% endfor %}
+      </ul>
+    </div>
     {% endif %}
 
-{% endblock content %}
+    <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px">
+      <div class="card-body p-4">
+        <div class="row p-2">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Full name" name="full_name" required />
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col">
+            <input type="email" class="form-control" placeholder="Email Address" name="email" required />
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Mobile number" name="phone" required />
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Address" name="address" required />
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Pincode" name="pincode" required />
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col">
+            <select name="city" class="p-1" style="width: 400px">
+              <option value="Mysuru">City: Mysuru</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <h2 class="subtitle" style="margin-bottom: 24px;">Location</h2>
+    <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px">
+      <div class="card-body p-4">
+
+        <div class="row p-2">
+          <div class="col">
+            Latitude: <input type="text" class="form-control" placeholder="Latitude" name="latitude" id="lat" />
+          </div>
+        </div>
+
+        <div class="row p-2">
+          <div class="col">
+            Longitude: <input type="text" class="form-control" placeholder="Longitude" name="longitude" id="lon" />
+          </div>
+        </div>
+
+        <button type="button" onclick="getLocation()">Get My Location</button>
+        <button type="button" onclick="showInputPosition()">Show Location</button>
+        <button type="button" onclick="resetLocation()">Reset Location</button>
+
+        <br>
+        <br>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+        <div id="maps">
+        </div>
+        <script>
+          var lat = document.getElementById("lat");
+          var lon = document.getElementById("lon");
+          function displayMapAt(lat, lon) {
+          $("#maps")
+            .html(
+              "<iframe id=\"map_frame\" "
+                + "width=\"100%\" height=\"350px\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" "
+                + "src=\"https://www.google.co.in/maps?f=q&amp;output=embed&amp;source=s_q&amp;q="
+                + lat + "," + lon
+                + "&amp;spn=0.199154,0.399727&amp;t=m&amp;"
+                +  "\"" + "></iframe>");
+
+          }
+
+          function showInputPosition() {
+            var lat = document.getElementById("latitude");
+            var lon = document.getElementById("longitude");
+            displayMapAt(lat.value, lon.value);
+          }
+
+          function getLocation() {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+            }
+          }
+
+          function resetLocation() {
+            lat.value = "";
+            lon.value = "";
+            $("#maps")
+              .html(
+                "<iframe id=\"map_frame\" "
+                  + "width=\"100%\" height=\"350px\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" "
+                  + "src=\"https://www.google.co.in/maps?f=q&amp;output=embed&amp;source=s_q&amp;q=Mysuru"
+                  + "&amp;spn=0.199154,0.399727&amp;t=m&amp;"
+                  +  "\"" + "></iframe>");
+          }
+          
+          function showPosition(position) {
+            lat.value = position.coords.latitude;
+            lon.value = position.coords.longitude;
+            displayMapAt(lat.value, lon.value);
+          }
+          </script>
+      </div>
+    </div>
+
+    <h2 class="subtitle" style="margin-top: 24px; margin-bottom: 24px;">Payment Information</h2>
+    {% if messages %} {% for message in messages %}
+    <div class="notification is-danger">{{message}}</div>
+    {% endfor %} {% endif %}
+
+    <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
+      <div class="card-body p-4">
+        <div class="row">
+          <div class="col">
+            <div class="d-flex justify-content-between" style="font-weight: 500">
+              <p class="mb-2">Subtotal</p>
+              <p class="mb-2">₹{{cart.get_subtotal_cost}}</p>
+            </div>
+
+            <div class="d-flex justify-content-between" style="font-weight: 500">
+              <p class="mb-0">Shipping</p>
+              <p class="mb-0">₹{{cart.get_shipping_cost}}0</p>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-between mb-4" style="font-weight: 500">
+              <p class="mb-2">Total (tax included)</p>
+              <p class="mb-2">₹{{cart.get_total_cost}}</p>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_type" value="cod" id="type">
+              <label class="form-check-label" for="type">
+                Cash on Delivery
+              </label>
+            </div>
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="radio" name="payment_type" value="razorpay" id="type" checked>
+              <label class="form-check-label" for="type">
+                Online Payment - Razorpay
+              </label>
+            </div>
+            <input type="submit" value="Checkout" class="btn btn-primary btn-block btn-lg">
+            </input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+{% else %}
 
 
-{% block scripts %}
+<h1 class="title p-2">Cart (0)</h1>
+<p>You don't have any products in your cart.</p>
 
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        var stripe = Stripe('{{ stripe_pub_key }}');
-        var elements = stripe.elements();
-
-        var card = elements.create('card');
-
-        card.mount('#card-element');
-
-        var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                } else {
-                    stripeTokenHandler(result.token);
-                }
-            });
-        });
-
-        function stripeTokenHandler(token) {
-            var form = document.getElementById('payment-form');
-            var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripe_token');
-            hiddenInput.setAttribute('value', token.id);
-            form.appendChild(hiddenInput);
-
-            form.submit();
-        }
-    </script>
+{% endif %} {% endblock content %} 
+{% block scripts %} 
 
 {% endblock scripts %}

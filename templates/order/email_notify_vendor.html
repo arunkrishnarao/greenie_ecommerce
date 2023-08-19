@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
-        <title>Interiorshop</title>
+        <title>Greenie</title>
 
         <style type="text/css">
             html {
@@ -30,7 +30,7 @@
                 <td>
                     <h3>Details</h3>
 
-                    <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br>
+                    <b>Name:</b> {{ order.full_name }}<br>
                     <b>Address:</b> {{ order.address }}<br>
                     <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
                     <b>E-mail:</b> {{ order.email }}<br>
@@ -54,9 +54,9 @@
                             {% if item.vendor == vendor %}
                                 <tr>
                                     <td>{{ item.product.title }}</td>
-                                    <td>${{ item.product.price }}</td>
+                                    <td>₹{{ item.product.price }}</td>
                                     <td>{{ item.quantity }}</td>
-                                    <td>${{ item.get_total_price }}</td>
+                                    <td>₹{{ item.get_total_price }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}

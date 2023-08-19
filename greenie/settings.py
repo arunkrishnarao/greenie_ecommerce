@@ -9,12 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(w0xd82mx=l#v^w)83zhzwc&))6#+9&#e(87y7a8mo=)6!=vz8'
+SECRET_KEY = 'django-insecure-5ypyapj)$c#bl@(xdts)sf7ikml50nf099!8l(&2e3p1db5r28'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'simple_multivendor_site.urls'
+ROOT_URLCONF = 'greenie.urls'
 
 TEMPLATES = [
     {
@@ -63,8 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'simple_multivendor_site.wsgi.application'
-
+WSGI_APPLICATION = 'greenie.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -76,6 +75,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'mydatabase',
+#         'USER': 'mydatabaseuser',
+#         'PASSWORD': 'mypassword',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -101,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -124,8 +133,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
 LOGIN_URL = 'vendor:login'
 LOGIN_REDIRECT_URL = 'vendor:vendor-admin'
 LOGOUT_REDIRECT_URL = 'core:home'
@@ -133,10 +140,11 @@ LOGOUT_REDIRECT_URL = 'core:home'
 SESSION_COOKIE_AGE = 86400 # Day in Seconds
 CART_SESSION_ID = 'cart'
 
-
-# STRIPE PAYMENT
-STRIPE_PUB_KEY = 'pk_test_OKdhbDNME5KHtnpzYRBfNmEZ00mjM6DVsJ' # For JavaScript
-STRIPE_SECRET_KEY = 'sk_test_jaIdMJOlkcUG6QpXV5wAJxXT005aZAJVM1' # For Django Backend
+RAZORPAY_APP_TITLE = 'Django'
+RAZORPAY_APP_VERSION = '4.1.2'
+RAZORPAY_KEY_ID = ''
+RAZORPAY_KEY_SECRET = ''
+CURRENCY = 'INR'
 
 # For Email Notification
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -145,5 +153,4 @@ EMAIL_HOST_USER = 'YOUR-EMAIL'
 EMAIL_HOST_PASSWORD = 'YOUR-EMAIL-PASSWORD'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_EMAIL_FROM = 'Multi Vendor Site <YOUR-EMAIL>'
-
+DEFAULT_EMAIL_FROM = 'greenie <YOUR-EMAIL>'

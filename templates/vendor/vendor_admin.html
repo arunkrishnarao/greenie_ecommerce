@@ -3,28 +3,48 @@
 {% block title %}Vendor Admin{% endblock title %}
 
 {% block content %}
-
-    <h1 class="title">Vendor Admin - <span class="is-capitalized">{{vendor.name}}</span></h1>
-
-    <div class="mb-5">
-        <strong>My Balance: </strong> ${{vendor.get_balance}} <br>
-        <strong>My Paid Amount: </strong> ${{vendor.get_paid_amount}} 
+<div class="container p-4">
+    <h1 class="title my-3 text-center">{{vendor.name}}'s Dashboard</h1>
+    {% if vendor.active == False %}
+    <div class="alert alert-danger text-center" role="alert">
+        {% for frontpage in core_frontpage %}
+            <h4 class="text-center pb-3"> Your vendor account is not activated, please contact Administrator with email, {{frontpage.email|safe}}.</h4>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <center>
+        <div class="d-inline">
+            <a class="btn btn-primary btn-lg me-1" href="{% url 'vendor:vendor-admin' %}">
+                Profile
+            </a>
+            <a class="btn btn-primary btn-lg me-1" href="{% url 'vendor:edit-vendor' %}">
+                Update Profile
+            </a>
+            <a class="btn btn-primary btn-lg me-1" href="{% url 'vendor:add-product' %}">
+                Add Product
+            </a>
+        </div>
+    </center>
+    <div class="my-5">
+        <strong>My Balance: </strong> ₹{{vendor.get_balance}} <br>
+        <strong>My Paid Amount: </strong> ₹{{vendor.get_paid_amount}} 
     </div>
 
-    <div class="box">
+    <div class="box my-5">
     
         <h2 class="is-size-3 mb-4">My Products</h2>
-
-        <a href="{% url 'vendor:add-product' %}" class="button is-dark is-uppercase mb-6">Add Product</a>
-
         {% if products %}
         
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>S.N.</th>
+                        <th>#</th>
                         <th>Title</th>
+                        <th>Description</th>
                         <th>Price</th>
+                        <th>Edit</th>
+                        <th>Disable/Enable</th>
+                        <th>Visible</th>
                     </tr>
                 </thead>
 
@@ -32,8 +52,12 @@
                     {% for product in products %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td><a href="{% url 'product:product' product.category.slug product.slug %}">{{ product.title }}</a></td>
-                            <td>${{ product.price }}</td>
+                            <td>{{ product.title }}</td>
+                            <td>{{ product.description }}</td>
+                            <td>₹{{ product.price }}</td>
+                            <td><a href="{% url 'vendor:edit-product' %}?pid={{ product.id }}"><i class="bi bi-pen"></i></a></td>
+                            <td><a href="{% url 'vendor:delete-product' %}?pid={{ product.id }}"><i class="bi bi-exclamation-triangle"></i></a></td>
+                            <td>{{ product.active }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -41,7 +65,9 @@
             </table>
 
         {% else %}
-            <p class="has-text-danger">Products not added yet.</p>
+            <p class="has-text-danger">Products not added yet. Try <a href="{% url 'vendor:add-product' %}" class="button is-dark is-uppercase mb-6">Add Product</a></p>
+
+
         {% endif %}
     
     </div>
@@ -54,15 +80,10 @@
                 <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
                     <div class="columns is-multiline">
                         <div class="column is-6">
-                            <h3 class="is-size-4">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</h3>
+                            <h3 class="is-size-4">Order ID: #{{ order.id }}</h3>
                         </div>
     
                         <div class="column is-12">
-                            <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br>
-                            <b>Address:</b> {{ order.address }}<br>
-                            <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
-                            <b>E-mail:</b> {{ order.email }}<br>
-                            <b>Phone:</b> {{ order.phone }}
     
                             <table class="table is-fullwidth mt-4">
                                 <thead>
@@ -71,19 +92,23 @@
                                         <th>Price</th>
                                         <th>Quantity</th>
                                         <th>Paid</th>
+                                        <th>Payment Type</th>
+                                        <th>Customer Payment Status</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
     
                                 <tbody>
                                     {% for item in order.items.all %}
-                                        {% if item.vendor == request.user.vendor %}
+                                        {% if item.vendor == request.user.vendor and item.order.status %}
                                             <tr>
                                                 <td>{{ item.product.title }}</td>
-                                                <td>${{ item.product.price }}</td>
+                                                <td>₹{{ item.product.price }}</td>
                                                 <td>{{ item.quantity }}</td>
                                                 <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
-                                                <td>${{ item.get_total_price }}</td>
+                                                <td>{{ item.order.payment_info }}</td>
+                                                <td>{{ item.order.status }}</td>
+                                                <td>₹{{ item.get_total_price }}</td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -96,5 +121,5 @@
         {% endif %}
 
     </div>
-
+</div>
 {% endblock content %}

@@ -4,16 +4,24 @@
 
 {% block content %}
 
-    <h1 class="title">Become Vendor</h1>
+<div class="container">
 
-    <form method="post" action="">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card my-5">
+
+    <form class="card-body p-lg-5" method="post" action="">
         {% csrf_token %}
-
+        <div class="text-center">
+            <img src="/media/logo.png" class="img-fluid profile-image-pic my-3" width="200px" alt="profile">
+        </div>
+        <h1 class="title" style="text-align:center; margin-bottom: 28px;">Vendor Register</h1>
         {{ form.as_p }}
 
         <div class="field">
             <div class="control">
-                <button class="button is-dark is-uppercase">Sign Up</button>
+                <div class="text-center"><button type="submit"
+                    class="btn px-5 mb-5 w-100 btn btn-outline-success">Sign Up</button></div>
             </div>
         </div>
     </form>

@@ -1,6 +1,7 @@
 from django.conf import settings
-
+from decimal import Decimal
 from product.models import Product
+from core.models import Settings
 
 
 class Cart(object):
@@ -19,7 +20,6 @@ class Cart(object):
 
         for item in self.cart.values():
             item['total_price'] = item['product'].price * item['quantity']
-
             yield item
 
     def __len__(self):
@@ -29,7 +29,7 @@ class Cart(object):
         product_id = str(product_id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 1, 'id': product_id}
+            self.cart[product_id] = {'quantity': 0, 'id': product_id}
 
         if update_quantity:
             self.cart[product_id]['quantity'] += int(quantity)
@@ -52,10 +52,22 @@ class Cart(object):
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
 
-    def get_total_cost(self):
+    def get_subtotal_cost(self):
         for p in self.cart.keys():
             self.cart[str(p)]['product'] = Product.objects.get(pk=p)
 
         return sum(item['quantity'] * item['product'].price for item in self.cart.values())
+
+    def get_shipping_cost(self):
+        vendor_list = [item['product'].vendor_id for item in self.cart.values()]
+        vendor_list = set(vendor_list)
+        shipping = Settings.objects.all()[0].shipping_cost * len(vendor_list)
+        return float(shipping)
+
+    def get_total_cost(self):
+        for p in self.cart.keys():
+            self.cart[str(p)]['product'] = Product.objects.get(pk=p)
+
+        return sum(item['quantity'] * item['product'].price for item in self.cart.values()) + abs(Decimal(float(self.get_shipping_cost())))
 
         

@@ -3,13 +3,17 @@
 {% block title %}Search for {{query}}{% endblock title %}
 
 {% block content %}
-    <div class="columns is-multiline mb-6">
-        <div class="column is-12 has-test-centered mt-6 mb-6">
-            <h2 class="is-size-3"> Search for "{{query}}"</h2>
-        </div>
+<div class="container p-4">
+    <div class="row p-1">
+        {% if query %}
+            <h4>Currently showing products for "{{query}}"</h4>
+        {% elif category %}
+            <h4>Currently showing products in category {{category}}</h4>
+        {% endif %}
 
         {% for product in products %}
             {% include 'product/parts/list_item.html' %}
         {% endfor %}
     </div>
+</div>
 {% endblock content %}

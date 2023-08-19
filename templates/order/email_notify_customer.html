@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
-        <title>Interiorshop</title>
+        <title>Greenie Order - {{ order.provider_order_id }}</title>
 
         <style type="text/css">
             html {
@@ -21,48 +21,49 @@
     </head>
 
     <body>
-        <table width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-                <td><h1>New order</h1></td>
-            </tr>
+        <table class="table table-bordered" width="100%" cellspacing="0" cellpadding="0">
 
             <tr>
-                <td>
-                    <h3>Details</h3>
-
-                    <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br>
-                    <b>Address:</b> {{ order.address }}<br>
-                    <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
-                    <b>E-mail:</b> {{ order.email }}<br>
-                    <b>Phone:</b> {{ order.phone }}
-                </td>
+                <td colspan="2"><b>Name: &ensp;</b> {{ order.full_name }}</td>
+                <td colspan="2"><b>Order ID: &ensp;</b> {{ order.id }}</td>
             </tr>
-
             <tr>
-                <td>
-                    <h3>Products</h3>
-
-                    <table width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td><b>Product</b></td>
-                            <td><b>Price</b></td>
-                            <td><b>Quantity</b></td>
-                            <td><b>Total</b></td>
-                        </tr>
-                        
-                        {% for item in order.items.all %}
-                            {% if item.vendor == vendor %}
-                                <tr>
-                                    <td>{{ item.product.title }}</td>
-                                    <td>${{ item.product.price }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>${{ item.get_total_price }}</td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </table>
-                </td>
+                <td colspan="2"><b>Payment Type: &ensp;</b> {{ order.payment_info }}</td>
+                <td colspan="2"><b>Payment Status: &ensp;</b> {{ order.status }}</td>
             </tr>
-        </table>
+            <tr>
+                <td colspan="2"><b>Payment ID: &ensp;</b> {{ order.payment_id }}</td>
+                <td colspan="2"><b>Payment Amount: &ensp;</b> {{ order.amount }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Pincode: &ensp;</b> {{ order.pincode }}</td>
+                <td colspan="2"><b>City: &ensp;</b> {{ order.city }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Email: &ensp;</b> {{ order.email }}</td>
+                <td colspan="2"><b>Phone: &ensp;</b> {{ order.phone }}</td>
+            </tr>
+            <tr>
+                <td colspan="4"><b>Time: &ensp;</b> {{ order.created_at }}</td>
+            </tr>
+            <tr>
+                <td colspan="4"><b>Address: &ensp;</b> {{ order.address }}</td>
+            </tr>
+            <tr>
+                <td><b>Product</b></td>
+                <td><b>Price</b></td>
+                <td><b>Quantity</b></td>
+                <td><b>Total</b></td>
+            </tr>
+            
+            {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>₹{{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.get_total_price }}</td>
+                </tr>
+            {% endfor %}
+
     </body>
 </html>

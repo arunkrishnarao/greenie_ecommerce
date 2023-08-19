@@ -5,24 +5,43 @@
 
 
 {% block content %}
-
-    <h1 class="title">Vendors</h1>
-
-    <div class="columns is-multiline">
+<div class="container p-4">
+    <h1 class="title p-1">Vendors</h1>
+        <div class="row">
         {% for vendor in vendors %}
-        
-            <div class="column is-3">
-                <div class="box">
-                    <h2 class="subtitle">
-                        {{ vendor.name }}
-                    </h2>
-                    <hr>
 
-                    <a href="{% url 'vendor:vendor' vendor.id %}" class="button is-primary ">View Products</a>
+            <div class="col-lg-3 g-2 col-md-4 col-sm-10 p-2 offset-md-0 offset-sm-1">
+                <div class="card border border-dark">
+                {% if vendor.image %}
+                <img
+                    class="card-img-top"
+                    style="height: 22vh"
+                    src="{{vendor.get_thumbnail}}"
+                    alt="{{vendor.name}}"
+                />
+                {% endif %}
+                    <div class="card-body">
+                        <h6 class="">{{vendor.name}}</h6>
+                        <div class="text-muted description">{{vendor.description}}</div>
+                
+                        {% if category_id is None %}
+                        <a href="{% url 'vendor:vendor' vendor.id %}">
+                            <button class="btn btn-link px-1">
+                            <i class="bi bi-plus">Visit Store</i>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'vendor:vendor' vendor.id %}?category={{category_id}}">
+                            <button class="btn btn-link px-1">
+                            <i class="bi bi-plus">Visit Store</i>
+                        </a>
+                        {% endif %}
+                        </button>
+                    </div>       
                 </div>
             </div>
 
         {% endfor %}
     </div>
+</div>
 
 {% endblock content %}

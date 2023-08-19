@@ -6,11 +6,11 @@
 
     {% if product.image %}
         <figure class="image is-4by3 mb-6">
-            <img src="{{product.image.url}}" alt="{{product.title}}">
+            <img src="{{product.get_thumbnail}}" alt="{{product.title}}">
         </figure>
     {% endif %}
 
-    <h1 class="title">{{product.title}}, ${{product.price}}</h1>
+    <h1 class="title">{{product.title}}, ₹{{product.price}}</h1>
 
     <p class="mb-6">
         <span class="tag is-dark">{{ product.vendor.name }}</span>

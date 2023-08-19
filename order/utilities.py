@@ -7,8 +7,8 @@ from django.template.loader import render_to_string
 
 from .models import Order, OrderItem
 
-def checkout(request, first_name, last_name, email, address, zipcode, place, phone, amount):
-    order = Order.objects.create(first_name=first_name, last_name=last_name, email=email, address=address, zipcode=zipcode, place=place, phone=phone, paid_amount=amount)
+def checkout(request, full_name, email, phone, address, pincode, place, amount, payment_info, provider_order_id="COD", latitude="", longitude=""):
+    order = Order.objects.create(full_name=full_name, email=email,  phone=phone, address=address, pincode=pincode, city=place, amount=amount, payment_info=payment_info, provider_order_id=provider_order_id, latitude=latitude, longitude=longitude)
 
     for item in Cart(request):
         OrderItem.objects.create(order=order, product=item['product'], vendor=item['product'].vendor, price=item['product'].price, quantity=item['quantity'])

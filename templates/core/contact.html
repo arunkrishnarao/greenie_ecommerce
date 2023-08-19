@@ -4,9 +4,26 @@
 {% block title %}Contact Us{% endblock title %}
 
 {% block content %}
+<div class="container p-4">
+    <h1 class="text-center">Contact Us</h1>
+    {% for frontpage in core_frontpage %}
+    <h4 class="text-center pb-3"> We currently serve Mysuru City. Contact us with email, {{frontpage.email|safe}} for queries or complaint</h4>
+    {% endfor %}
 
-    <h1>Contact Us</h1>
-
-    
-
+    {% for frontpage in core_frontpage %}
+    <center>
+      <div class="d-inline">
+        <a class="text-muted p-5 me-2" style="text-decoration: none" href="{{frontpage.facebook|safe}}">
+          <i class="bi bi-facebook" style="font-size: 1.5rem"></i> Facebook
+        </a>
+        <a class="text-muted p-5 me-2" style="text-decoration: none" href="{{frontpage.instagram|safe}}">
+          <i class="bi bi-instagram" style="font-size: 1.5rem"></i> Instagram
+        </a>
+        <a class="text-muted p-5 me-2" style="text-decoration: none" href="{{frontpage.twitter|safe}}">
+          <i class="bi bi-twitter" style="font-size: 1.5rem"></i> Twitter
+        </a>
+      </div>
+    </center>
+    {% endfor %}
+</div>
 {% endblock content %}

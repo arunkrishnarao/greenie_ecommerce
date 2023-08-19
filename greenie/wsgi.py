@@ -1,5 +1,5 @@
 """
-WSGI config for simple_multivendor_site project.
+WSGI config for greenie project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'simple_multivendor_site.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'greenie.settings')
 
 application = get_wsgi_application()

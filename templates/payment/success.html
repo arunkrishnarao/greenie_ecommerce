@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Order Successful{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h3 class="title text-center">Your order has been placed. Please save the following details for future reference. </h3>
+    <h1>Order Details</h1>
+    <h1 colspan="2"><b>Payment Status: &ensp;</b> {{ order.status }}</h1>
+
+    <table class="table table-bordered" width="100%" cellspacing="0" cellpadding="0">
+
+            <tr>
+                <td colspan="2"><b>Name: &ensp;</b> {{ order.full_name }}</td>
+                <td colspan="2"><b>Order ID: &ensp;</b> {{ order.id }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Payment Type: &ensp;</b> {{ order.payment_info }}</td>
+                <td colspan="2"><b>Payment Status: &ensp;</b> {{ order.status }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Payment ID: &ensp;</b> {{ order.payment_id }} - {{provider_order_id}}</td>
+                <td colspan="2"><b>Payment Amount: &ensp;</b> {{ order.amount }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Pincode: &ensp;</b> {{ order.pincode }}</td>
+                <td colspan="2"><b>City: &ensp;</b> {{ order.city }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Email: &ensp;</b> {{ order.email }}</td>
+                <td colspan="2"><b>Phone: &ensp;</b> {{ order.phone }}</td>
+            </tr>
+            <tr>
+                <td colspan="4"><b>Date: &ensp;</b> {{ order.created_at }}</td>
+            </tr>
+            <tr>
+                <td colspan="4"><b>Address: &ensp;</b> {{ order.address }}</td>
+            </tr>
+            <tr>
+                <td><b>Product</b></td>
+                <td><b>Price</b></td>
+                <td><b>Quantity</b></td>
+                <td><b>Total</b></td>
+            </tr>
+            
+            {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>₹{{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.get_total_price }}</td>
+                </tr>
+            {% endfor %}
+
+    </table>
+    <center><button type="button"  onclick="window.print();" class="btn btn-primary">Download</button></center>
+
+</div>
+{% endblock content %}

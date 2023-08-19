@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Vendor Login{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h1 class="p-2 text-center"> Reports </h1>
+        <center>
+            <h4> Select Date Range to generate Report:</h4>
+            <form id="report_gen" method="get" onsubmit="return check()">
+                From: <input type="date" id="start" name="sd"
+                value="2022-01-01"
+                min="2022-01-01" max="2100-12-31">
+                &nbsp;
+                To: <input type="date" id="end" name="ed"
+                value="2022-01-01"
+                min="2022-01-01" max="2100-12-31">
+                &nbsp;
+                Type: <select name="rt" id="rt">
+                    <option value="order">Order Report</option>
+                    <option value="delivery">Delivery Report</option>
+                  </select>
+
+                &nbsp;<input type="submit" value="Generate Report">
+            </form>
+        </center>
+        </div>
+    </div>
+    <script>
+        function check()
+        {
+            let form = document.getElementById("report_gen");
+            let start = new Date(form.start.value)
+            let end = new Date(form.end.value)
+            let diff = end.getTime() - start.getTime()
+            if(diff <= 0)
+            {
+                alert("Invalid Date Inputs")
+                return false
+            }
+            form.submit();
+        }
+    </script>
+{% endblock content %}
